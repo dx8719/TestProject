@@ -1,10 +1,10 @@
 # LsnProject
 
 ## 项目介绍
-  该项目只是出于学习为目的，语言方面主要是以Kotlin 为主。
+TestProject for test flight
   
 ## 更新
-项目主要更新点如下：
+
 
 # Kotlin
  - [x] DSL简单学习  ✔️
