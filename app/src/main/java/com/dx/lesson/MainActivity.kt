@@ -1,8 +1,15 @@
 package com.dx.lesson
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
+import android.annotation.SuppressLint
+import android.os.Build
 import android.view.View
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
+import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
 import com.dx.baselib.base.KTBaseActivity
 import com.dx.baselib.utils.UILogUtil
@@ -15,11 +22,14 @@ import com.dx.lesson.test.bean.Repo
 import com.dx.lesson.test.model.ProjectModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 
 class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), TestConstract.View {
     override fun initPresenter(): KTMainPresenter = KTMainPresenter()
@@ -27,14 +37,15 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
 
     override fun layoutResId(): Int = R.layout.activity_main
 
+    @RequiresApi(Build.VERSION_CODES.N)
+    @SuppressLint("WrongConstant")
     override fun initView() {
         super.initView()
 
         Glide.with(this)
             .load("https://saas-oss.mumway.com/auntsass/image/202108/61b7681aa759394d636042974d654363.png")
             .override(1090, 500)
-
-            .into(image);
+            .into(image)
 
 
 
@@ -47,6 +58,31 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
             }
         })
 
+        bt_bt.setOnClickListener {
+            val objectAnimator1 = ObjectAnimator.ofFloat(view_avatar, "topFlip", -60f)
+            val objectAnimator2 = ObjectAnimator.ofFloat(view_avatar, "bottomFlip", 60f)
+            val objectAnimator3 = ObjectAnimator.ofFloat(view_avatar, "flipRotation", 270f)
+//
+//            objectAnimator.duration = 5000
+//            objectAnimator.start()
+            //动画顺序执行
+//            val animatorSet = AnimatorSet()
+//            animatorSet.playSequentially(objectAnimator1,objectAnimator2,objectAnimator3)
+//            animatorSet.duration = 1000
+//            animatorSet.start()
+
+            //动画一起执行
+            var topHolder = PropertyValuesHolder.ofFloat("topFlip", -60f)
+            var topHolder1 = PropertyValuesHolder.ofFloat("bottomFlip", 60f)
+            var topHolder2 = PropertyValuesHolder.ofFloat("flipRotation", 270f)
+
+            var holderAnimator = ObjectAnimator.ofPropertyValuesHolder(view_avatar,topHolder,topHolder1,topHolder2)
+            holderAnimator.duration = 1000
+            holderAnimator.start()
+
+        }
+
+
         val projectApi = NetWorkApi.INSTANCE.getApi(ProjectApi::class.java)
 
 
@@ -58,6 +94,8 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
 //
 //        }
 
+        //源码阅读
+//RetroFit TestCode
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.github.com/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -75,6 +113,25 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
             }
         })
 
+//源码阅读
+//OkHttp TestCode
+        val okHttpClient = OkHttpClient()
+        val request = Request.Builder()
+            .url("https://api.github.com/users/rengwuxian/repos")
+            .build()
+
+        okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+
+            }
+
+            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                println(response.code)
+//                Toast.makeText(this@MainActivity, response.code.toString(), LENGTH_LONG).show()
+            }
+        })
+
+
 //        mViewModel.projectTreeData.observe(this, { data ->
 //
 //            Log.i("wangly", "data = ${data.data}")
@@ -85,17 +142,17 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
         mViewModel.projectTreeData.observeState(this, callback = {
 
             onSuccess {
-                UILogUtil.d("wangly", "$it")
+                UILogUtil.d("dx", "$it")
             }
 
             onFail { i, s ->
 
-                UILogUtil.e("wangly", "$i")
+                UILogUtil.e("dx", "$i")
 
             }
 
             onComplete {
-                UILogUtil.e("wangly", "onComplete")
+                UILogUtil.e("dx", "onComplete")
 
             }
 
