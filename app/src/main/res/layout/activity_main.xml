@@ -25,7 +25,7 @@
         android:layout_marginRight="15dp"
         android:visibility="gone" />
 
-    <com.dx.lesson.test.view.MyCusView
+    <com.dx.lesson.test.view.ProvinceView
         android:id="@+id/view_avatar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

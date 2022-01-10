@@ -1,12 +1,12 @@
 package com.dx.lesson
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
+import android.animation.*
 import android.annotation.SuppressLint
 import android.os.Build
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.annotation.RequiresApi
@@ -20,6 +20,7 @@ import com.dx.lesson.test.api.NetWorkApi
 import com.dx.lesson.test.api.ProjectApi
 import com.dx.lesson.test.bean.Repo
 import com.dx.lesson.test.model.ProjectModel
+import com.dx.lesson.test.view.ProvinceView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
@@ -59,26 +60,81 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
         })
 
         bt_bt.setOnClickListener {
+            /**
+
             val objectAnimator1 = ObjectAnimator.ofFloat(view_avatar, "topFlip", -60f)
             val objectAnimator2 = ObjectAnimator.ofFloat(view_avatar, "bottomFlip", 60f)
             val objectAnimator3 = ObjectAnimator.ofFloat(view_avatar, "flipRotation", 270f)
-//
-//            objectAnimator.duration = 5000
-//            objectAnimator.start()
-            //动画顺序执行
-//            val animatorSet = AnimatorSet()
-//            animatorSet.playSequentially(objectAnimator1,objectAnimator2,objectAnimator3)
-//            animatorSet.duration = 1000
-//            animatorSet.start()
+            //
+            //            objectAnimator.duration = 5000
+            //            objectAnimator.start()
+            //Set 对多个动画进行合成
+            val animatorSet = AnimatorSet()
+            animatorSet.playSequentially(objectAnimator1, objectAnimator2, objectAnimator3) //顺序播放
+            //            animatorSet.playTogether(objectAnimator1,objectAnimator2,objectAnimator3)  //一起播放
+            animatorSet.duration = 1000
+            animatorSet.start()
+
+             **/
 
             //动画一起执行
-            var topHolder = PropertyValuesHolder.ofFloat("topFlip", -60f)
-            var topHolder1 = PropertyValuesHolder.ofFloat("bottomFlip", 60f)
-            var topHolder2 = PropertyValuesHolder.ofFloat("flipRotation", 270f)
+//            val topHolder = PropertyValuesHolder.ofFloat("topFlip", -60f)
+//            val topHolder1 = PropertyValuesHolder.ofFloat("bottomFlip", 60f)
+//            val topHolder2 = PropertyValuesHolder.ofFloat("flipRotation", 270f)
+//
+//            val holderAnimator = ObjectAnimator.ofPropertyValuesHolder(
+//                view_avatar,
+//                topHolder,
+//                topHolder1,
+//                topHolder2
+//            )
+//            holderAnimator.duration = 1000
+//            holderAnimator.start()
 
-            var holderAnimator = ObjectAnimator.ofPropertyValuesHolder(view_avatar,topHolder,topHolder1,topHolder2)
-            holderAnimator.duration = 1000
-            holderAnimator.start()
+
+            //关键帧 KeyFrame
+            /**
+            //            val objectAnimator = ObjectAnimator.ofFloat(view_avatar, "topFlip", -60f)
+            val keyFrame = Keyframe.ofFloat(0f, 0f)
+            val keyFrame1 = Keyframe.ofFloat(0.2f, -(1.5 * 60).toFloat())
+            val keyFrame2 = Keyframe.ofFloat(0.8f, -(0.6 * 60).toFloat())
+            val keyFrame3 = Keyframe.ofFloat(1f, -60f)
+
+            val propertyValuesHolder = PropertyValuesHolder.ofKeyframe(
+            "topFlip",
+            keyFrame,
+            keyFrame1,
+            keyFrame2,
+            keyFrame3
+            )
+            val objectAnimator = ObjectAnimator.ofPropertyValuesHolder(view_avatar,propertyValuesHolder)
+            objectAnimator.startDelay = 1000
+            objectAnimator.duration = 2000
+            objectAnimator.start()
+             **/
+
+            //差值器/
+            /**
+            val animator = ObjectAnimator.ofFloat(view_avatar,"topFlip",-60f)
+            //            animator.interpolator = DecelerateInterpolator()
+            animator.startDelay = 1000
+            animator.duration = 2000
+            animator.start()
+             **/
+
+            //TypeEvaluator 估值器 - 计算器 对指定的类型属性计算每一刻(动画完成度)的属性值
+            var argbEvaluator = ArgbEvaluator()
+
+            //对文字使用估值器
+            val provinceEvaluator = ProvinceView.ProvinceEvaluator()
+            val animator =
+                ObjectAnimator.ofObject(view_avatar, "province", provinceEvaluator, "A", "ABC")
+            animator.startDelay = 1000
+            animator.duration = 5000
+            animator.start()
+
+
+
 
         }
 
