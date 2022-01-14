@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -25,9 +26,25 @@
         android:layout_marginRight="15dp"
         android:visibility="gone" />
 
-    <com.dx.lesson.test.view.ProvinceView
-        android:id="@+id/view_avatar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#30ff0000">
+
+        <com.dx.lesson.test.view.MaterialEditText
+            android:id="@+id/material_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="UserName"
+            app:userFloatingLabel="false" />
+
+    </FrameLayout>
+
+    <com.dx.lesson.test.view.NewCusView
+        android:id="@+id/view_avatar"
+        android:tooltipText="就打完了肯德基哇路况加大网络科技大佬我到家啊为了大家来玩吉拉沃吉离开家都快啦"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/avatar" />
 </LinearLayout>

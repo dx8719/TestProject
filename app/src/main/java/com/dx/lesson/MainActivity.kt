@@ -2,11 +2,9 @@ package com.dx.lesson
 
 import android.animation.*
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.os.Build
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import android.widget.Toast.LENGTH_LONG
 import androidx.annotation.RequiresApi
@@ -59,6 +57,10 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
             }
         })
 
+        view_avatar.setOnClickListener {
+            Toast.makeText(this, "点击了", Toast.LENGTH_SHORT).show()
+        }
+
         bt_bt.setOnClickListener {
             /**
 
@@ -78,18 +80,18 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
              **/
 
             //动画一起执行
-//            val topHolder = PropertyValuesHolder.ofFloat("topFlip", -60f)
-//            val topHolder1 = PropertyValuesHolder.ofFloat("bottomFlip", 60f)
-//            val topHolder2 = PropertyValuesHolder.ofFloat("flipRotation", 270f)
-//
-//            val holderAnimator = ObjectAnimator.ofPropertyValuesHolder(
-//                view_avatar,
-//                topHolder,
-//                topHolder1,
-//                topHolder2
-//            )
-//            holderAnimator.duration = 1000
-//            holderAnimator.start()
+            val topHolder = PropertyValuesHolder.ofFloat("topFlip", -60f)
+            val topHolder1 = PropertyValuesHolder.ofFloat("bottomFlip", 60f)
+            val topHolder2 = PropertyValuesHolder.ofFloat("flipRotation", 270f)
+
+            val holderAnimator = ObjectAnimator.ofPropertyValuesHolder(
+                view_avatar,
+                topHolder,
+                topHolder1,
+                topHolder2
+            )
+            holderAnimator.duration = 3000
+            holderAnimator.start()
 
 
             //关键帧 KeyFrame
@@ -126,14 +128,14 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
             var argbEvaluator = ArgbEvaluator()
 
             //对文字使用估值器
-            val provinceEvaluator = ProvinceView.ProvinceEvaluator()
-            val animator =
-                ObjectAnimator.ofObject(view_avatar, "province", provinceEvaluator, "A", "ABC")
-            animator.startDelay = 1000
-            animator.duration = 5000
-            animator.start()
-
-
+//            val provinceEvaluator = ProvinceView.ProvinceEvaluator()
+//            val animator =
+//                ObjectAnimator.ofObject(material_edittext, "province", provinceEvaluator, "A", "ABC")
+//            animator.startDelay = 1000
+//            animator.duration = 5000
+//            animator.start()
+//
+//            val bitmap:Bitmap = Bitmap.createBitmap(1,2,Bitmap.Config.ARGB_8888)
 
 
         }

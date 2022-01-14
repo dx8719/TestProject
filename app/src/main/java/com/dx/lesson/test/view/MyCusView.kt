@@ -69,6 +69,9 @@ class MyCusView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         canvas.restore()
     }
 
+    override fun draw(canvas: Canvas?) {
+        super.draw(canvas)
+    }
 
     //优化的获取bitmap方式
     private fun getAvatar(width: Int): Bitmap {

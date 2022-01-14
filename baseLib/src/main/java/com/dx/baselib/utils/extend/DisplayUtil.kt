@@ -20,7 +20,7 @@ val Int.dp
         TypedValue.COMPLEX_UNIT_DIP,
         this.toFloat(),
         Resources.getSystem().displayMetrics
-    ).toInt()
+    )
 
 val Float.px
     get() = TypedValue.applyDimension(
