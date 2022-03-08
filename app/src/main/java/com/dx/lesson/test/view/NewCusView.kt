@@ -16,28 +16,70 @@ class NewCusView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
     val IMG_WIDTH = 200.dp
     val IMG_PADDING = 50.dp
     val bitmap = getAvatar(IMG_WIDTH.toInt())
-    val ANGEL = 30f
     val camera: Camera = Camera()
+    var ANGEL = 0f
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     init {
-
+        camera.setLocation(0f,0f,-6*resources.displayMetrics.density)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        //翻折效果
+        //翻折效果:上半部分
         canvas.save()
         canvas.translate(
-            width / 2 + IMG_PADDING,
-            height / 2 + IMG_PADDING,
+            IMG_WIDTH / 2 + IMG_PADDING,
+            IMG_WIDTH / 2 + IMG_PADDING,
         )
-        camera.applyToCanvas(canvas)
-        camera.rotateX(ANGEL)
         canvas.translate(
-            -(width / 2 + IMG_PADDING),
-            -(height / 2 + IMG_PADDING)
+            -(IMG_WIDTH / 2 + IMG_PADDING),
+            -(IMG_WIDTH / 2 + IMG_PADDING)
         )
+
+        canvas.clipRect(
+            IMG_PADDING,
+            IMG_PADDING,
+            IMG_PADDING + IMG_WIDTH,
+            IMG_PADDING + IMG_WIDTH / 2
+        )
+
+        canvas.drawBitmap(
+            bitmap,
+            IMG_PADDING,
+            IMG_PADDING,
+            paint
+        )
+        canvas.restore()
+
+
+        //翻折效果:下半部分
+        canvas.save()
+        canvas.translate(
+            IMG_WIDTH / 2 + IMG_PADDING,
+            IMG_WIDTH / 2 + IMG_PADDING,
+        )
+        camera.save()
+        camera.rotateX(ANGEL)
+        camera.applyToCanvas(canvas)
+        camera.restore()
+
+        canvas.translate(
+            -(IMG_WIDTH / 2 + IMG_PADDING),
+            -(IMG_WIDTH / 2 + IMG_PADDING)
+        )
+
+        canvas.clipRect(
+            IMG_PADDING,
+            IMG_PADDING + IMG_WIDTH / 2,
+            IMG_PADDING + IMG_WIDTH,
+            IMG_PADDING + IMG_WIDTH
+        )
+
         canvas.drawBitmap(
             bitmap,
             IMG_PADDING,

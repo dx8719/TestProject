@@ -2,7 +2,7 @@ package com.dx.lesson
 
 import android.animation.*
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
+import android.content.Intent
 import android.os.Build
 import android.view.View
 import android.widget.Toast
@@ -18,7 +18,6 @@ import com.dx.lesson.test.api.NetWorkApi
 import com.dx.lesson.test.api.ProjectApi
 import com.dx.lesson.test.bean.Repo
 import com.dx.lesson.test.model.ProjectModel
-import com.dx.lesson.test.view.ProvinceView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
@@ -58,10 +57,18 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
         })
 
         view_avatar.setOnClickListener {
+
+            val intent = Intent(this, NestScrollActivity::class.java)
+            startActivity(intent)
             Toast.makeText(this, "点击了", Toast.LENGTH_SHORT).show()
         }
 
         bt_bt.setOnClickListener {
+
+            val objectAnimator = ObjectAnimator.ofFloat(view_avatar, "ANGEL", -100f)
+            objectAnimator.duration = 200
+            objectAnimator.start()
+
             /**
 
             val objectAnimator1 = ObjectAnimator.ofFloat(view_avatar, "topFlip", -60f)
@@ -80,18 +87,18 @@ class MainActivity : KTBaseActivity<KTMainPresenter, TestConstract.View>(), Test
              **/
 
             //动画一起执行
-            val topHolder = PropertyValuesHolder.ofFloat("topFlip", -60f)
-            val topHolder1 = PropertyValuesHolder.ofFloat("bottomFlip", 60f)
-            val topHolder2 = PropertyValuesHolder.ofFloat("flipRotation", 270f)
-
-            val holderAnimator = ObjectAnimator.ofPropertyValuesHolder(
-                view_avatar,
-                topHolder,
-                topHolder1,
-                topHolder2
-            )
-            holderAnimator.duration = 3000
-            holderAnimator.start()
+//            val topHolder = PropertyValuesHolder.ofFloat("topFlip", -60f)
+//            val topHolder1 = PropertyValuesHolder.ofFloat("bottomFlip", 60f)
+//            val topHolder2 = PropertyValuesHolder.ofFloat("flipRotation", 270f)
+//
+//            val holderAnimator = ObjectAnimator.ofPropertyValuesHolder(
+//                view_avatar,
+//                topHolder,
+//                topHolder1,
+//                topHolder2
+//            )
+//            holderAnimator.duration = 3000
+//            holderAnimator.start()
 
 
             //关键帧 KeyFrame
